@@ -1,15 +1,19 @@
 pipeline {
-  agent any
-  stages {
-    stage('clean') {
-      steps {
-        sh './gradlew clean'
-      }
+    agent any
+    stages {
+        stage('Run Tests') {
+            parallel {
+                stage('clean') {
+                  steps {
+                    sh './gradlew clean'
+                  }
+                }
+                stage('App Module Test') {
+                  steps {
+                    sh './gradlew app:testDebugUnitTest'
+                  }
+                }
+            }
+        }
     }
-    stage('App Module Test') {
-      steps {
-        sh './gradlew app:testDebugUnitTest'
-      }
-    }
-  }
 }
